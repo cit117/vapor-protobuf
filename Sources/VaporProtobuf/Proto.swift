@@ -1,10 +1,5 @@
 import SwiftProtobuf
 import Vapor
-public protocol ProtobufContent  {
-    
-}
-
-
 
 public struct Proto<T:Message>{
     var message:T
