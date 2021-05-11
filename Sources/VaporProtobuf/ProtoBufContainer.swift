@@ -16,7 +16,7 @@ public protocol ProtoBufContainer {
 
 extension ProtoBufContainer {
     public func decode<M>(_ decodable: M.Type) throws -> Proto<M> where M:Message {
-        try self.decode(M.self, as: .proto)
+        try self.decode(M.self, as: self.contentType ?? .proto)
     }
     public func decode<M>(_ decodable: M.Type,as contentType: HTTPMediaType) throws -> Proto<M> where M:Message {
         var proto = try self.decode(M.self, using: contentType)
@@ -24,7 +24,7 @@ extension ProtoBufContainer {
         return .init(message: proto)
     }
     public mutating func encode<M>(_ encodable: Proto<M>) throws where M:Message {
-        try self.encode(encodable.message, using: .proto)
+        try self.encode(encodable.message, using: self.contentType ?? .proto)
     }
     public mutating func encode<M>(_ encodable: Proto<M>,as contentType: HTTPMediaType) throws where M:Message {
         var encodable = encodable

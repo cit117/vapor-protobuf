@@ -2,7 +2,7 @@ import SwiftProtobuf
 import Vapor
 
 public struct Proto<T:Message>{
-    var message:T
+   public var message:T
 }
 
 extension Proto: ResponseEncodable,RequestDecodable {
