@@ -3,6 +3,9 @@ import Vapor
 
 public struct Proto<T:Message>{
    public var message:T
+    public init(from message: T) {
+        self.message = message
+    }
 }
 
 extension Proto: ResponseEncodable,RequestDecodable {
@@ -14,9 +17,9 @@ extension Proto: ResponseEncodable,RequestDecodable {
             let data = buffer.readData(length: buffer.readableBytes)!
             var result: Self
             if request.headers.contentType == .proto {
-                result = try .init(message: .init(serializedData: data))
+                result = try .init(from: .init(serializedData: data))
             } else {
-                result = try .init(message: .init(jsonUTF8Data: data))
+                result = try .init(from: .init(jsonUTF8Data: data))
             }
             return request.eventLoop.makeSucceededFuture(result)
         }catch  {
@@ -40,4 +43,5 @@ extension Proto: ResponseEncodable,RequestDecodable {
             return request.eventLoop.makeFailedFuture(error)
         }
     }
+    
 }
